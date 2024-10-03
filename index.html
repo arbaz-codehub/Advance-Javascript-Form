@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Payment Form</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+      }
+
+      .main-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .steps,
+      .notes-links {
+        margin: 20px 0;
+        text-align: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h3 {
+        color: #555;
+        margin-bottom: 15px;
+      }
+
+      .steps ul {
+        padding-left: 20px;
+        list-style-type: decimal;
+        text-align: left;
+      }
+
+      .notes-links button {
+        width: auto;
+        padding: 10px 20px;
+        margin: 5px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .notes-links button:hover {
+        background-color: #0056b3;
+      }
+
+      .form-group {
+        margin: 15px 0;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      button:hover:not(:disabled) {
+        background-color: #218838;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .modal-content p {
+        margin-bottom: 15px;
+      }
+
+      @media screen and (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+
+        .container,
+        .steps,
+        .notes-links {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-content">
+      <!-- Steps Section -->
+      <div class="steps">
+        <h3>Steps:</h3>
+        <ul>
+          <li>First fill the form, then pay the price.</li>
+          <li>1st Sem Notes - Rs. 100</li>
+          <li>3rd Sem Notes - Rs. 300</li>
+          <li>5th Sem Notes - Rs. 400</li>
+          <li>Attach the payment screenshot with the email.</li>
+          <li>Within 24 hours you will get the access code.</li>
+        </ul>
+      </div>
+
+      <!-- Link to the notes -->
+      <div class="notes-links">
+        <h3>Link to the notes you want:</h3>
+        <button onclick="button1()">BCA 1st Sem</button>
+        <button onclick="button2()">BCA 3rd Sem</button>
+        <button onclick="button3()">BCA 5th Sem</button>
+      </div>
+
+      <!-- Form Section -->
+      <div class="container">
+        <h1>Notes Access Form</h1>
+        <!-- QR Code Section -->
+        <div style="text-align: center; margin-bottom: 20px">
+          <img
+            src="./qr.jpg"
+            alt="QR Code"
+            style="width: 150px; height: auto"
+          />
+          <p>Scan this QR code to pay</p>
+        </div>
+
+        <form id="paymentForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="class">Class</label>
+            <select id="class" name="class" required>
+              <option value="">Select Class</option>
+              <option value="BCA 1st Sem">BCA 1st Sem</option>
+              <option value="BCA 2nd Sem">BCA 2nd Sem</option>
+              <option value="BCA 3rd Sem">BCA 3rd Sem</option>
+              <option value="BCA 4th Sem">BCA 4th Sem</option>
+              <option value="BCA 5th Sem">BCA 5th Sem</option>
+              <option value="BCA 6th Sem">BCA 6th Sem</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="college">College</label>
+            <select id="college" name="college" required>
+              <option value="">Select College</option>
+              <option value="Govt. PG College, Una">
+                Govt. PG College, Una
+              </option>
+              <option value="SVSD PG College, Bhatoli">
+                SVSD PG College, Bhatoli
+              </option>
+              <option value="Girls College, Lalsinghi">
+                Girls College, Lalsinghi
+              </option>
+              <option value="KC College, Pandoga">KC College, Pandoga</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <button type="submit" id="submitBtn" disabled>
+            Pay and get access code
+          </button>
+        </form>
+
+        <!-- Modal for access code confirmation -->
+        <div class="modal" id="modal">
+          <div class="modal-content">
+            <p>Within 24 hours you will get the access code.</p>
+            <button onclick="closeModal()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const button1 = () =>
+        (window.location.href = "https://bca-1st-sem.netlify.app");
+      const button2 = () =>
+        (window.location.href = "https://bca-3rd-sem.netlify.app");
+      const button3 = () =>
+        (window.location.href = "https://bca-5th-sem.netlify.app");
+
+      const submitBtn = document.getElementById("submitBtn");
+
+      function checkFormCompletion() {
+        const fullName = document.getElementById("fullName").value;
+        const className = document.getElementById("class").value;
+        const collegeName = document.getElementById("college").value;
+        const email = document.getElementById("email").value;
+
+        if (fullName && className && collegeName && email) {
+          submitBtn.disabled = false;
+        } else {
+          submitBtn.disabled = true;
+        }
+      }
+
+      document
+        .getElementById("fullName")
+        .addEventListener("input", checkFormCompletion);
+      document
+        .getElementById("class")
+        .addEventListener("change", checkFormCompletion);
+      document
+        .getElementById("college")
+        .addEventListener("change", checkFormCompletion);
+      document
+        .getElementById("email")
+        .addEventListener("input", checkFormCompletion);
+
+      function handleSubmit(event) {
+        event.preventDefault();
+
+        // Get form data
+        const fullName = document.getElementById("fullName").value;
+        const className = document.getElementById("class").value;
+        const collegeName = document.getElementById("college").value;
+        const email = document.getElementById("email").value;
+
+        // Ensure all fields are filled
+        if (fullName && className && collegeName && email) {
+          // Compose email content with explicit newline characters
+          const subject =
+            "Attach your payment screenshot to get accessCode and Wait 24 hours to get the code";
+          const body = `Full Name: ${fullName}\nClass: ${className}\nCollege: ${collegeName}\nEmail: ${email}`;
+          const recipient = "iamonlymrx@gmail.com"; // Replace with your email
+
+          // Redirect to default email app
+          window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`;
+
+          // Show success modal
+          showModal();
+        } else {
+          alert("Please fill in all the fields before proceeding.");
+        }
+      }
+
+      // function handleSubmit(event) {
+      //   event.preventDefault();
+
+      //   // Get form data
+      //   const fullName = document.getElementById("fullName").value;
+      //   const className = document.getElementById("class").value;
+      //   const collegeName = document.getElementById("college").value;
+      //   const email = document.getElementById("email").value;
+
+      //   // Ensure all fields are filled
+      //   if (fullName && className && collegeName && email) {
+      //     // Compose email content
+      //     const subject =
+      //       "Attach your payment screenshot to get accessCode and Wait 24 hours to get the code";
+      //     const body = `Full Name: ${fullName}%0D%0AClass: ${className}%0D%0ACollege: ${collegeName}%0D%0AEmail: ${email}`;
+      //     const recipient = "iamonlymrx@gmail.com"; // Replace with your email
+
+      //     // Redirect to default email app
+      //     window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(
+      //       subject
+      //     )}&body=${encodeURIComponent(body)}`;
+
+      //     // Show success modal
+      //     showModal();
+      //   } else {
+      //     alert("Please fill in all the fields before proceeding.");
+      //   }
+      // }
+
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
