@@ -1,5 +1,7 @@
 # Advanced JavaScript Payment Form
 
+![Modern Javascript Form](project4.png)
+
 ## Overview
 The Advanced JavaScript Payment Form is designed for students who need to obtain an access code for a notes website. Users must fill out the form with their details before proceeding with payment. The form captures necessary information like name, email, college, and class, and it requires users to complete it before allowing them to click the payment or submit button. The payment is processed through a scanner, and upon submission, the user is redirected to their email with a pre-filled message containing their details.
 
